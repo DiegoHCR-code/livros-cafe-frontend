@@ -1,68 +1,132 @@
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { login } from "../features/user/userSlice";
-import { fakeAuthService } from "../features/user/authService";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-const Container = styled.div`
-  max-width: 400px;
-  margin: 4rem auto;
+import styled from 'styled-components';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fakeAuthService } from '../features/user/authService';
+import { login } from '../features/user/userSlice';
+import { useNavigate, Link } from 'react-router-dom';
+
+const Background = styled.div`
+  background-color: #1b0c0a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
+
+const Card = styled.div`
+  background-color: #e3c39a;
+  border: 1px solid #d9b99b;
+  padding: 2.5rem;
+  border-radius: 30px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  text-align: center;
+
+  img {
+    width: 400px;
+  }
+`;
+
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 25px;
   margin: 10px 0;
+  border: 1px solid #d9b99b;
+  border-radius: 25px;
+  background: #F8EDD4FF;
+  color: #1b0c0a;
+
+  &::placeholder {
+    color: #1B0C0AFA;
+    font-size: 1rem;
+  }
 `;
+
 const Button = styled.button`
-  padding: 10px 20px;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: #7b4b2a;
   color: white;
   border: none;
+  padding: 20px;
+  width: 50%;
+  margin-top: 10px;
+  border-radius: 25px;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+
+  &:hover {
+    background-color: #5c3820;
+  }
+`;
+
+const SmallText = styled.small`
+  display: block;
+  margin-top: 1rem;
+  color: #7b4b2a;
+  font-size: 1rem;
+`;
+
+const StyledLink = styled(Link)`
+  color: #7b4b2a;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 1.1rem;
+
+  &:hover {
+    color: #5c3820;
+  }
 `;
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleChange = e =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
       const user = await fakeAuthService.login(form);
       dispatch(login(user));
-      if (user.role === "admin") {
-        navigate("/admin");
+      if (user.role === 'admin') {
+        navigate('/admin');
       } else {
-        navigate("/");
+        navigate('/');
       }
     } catch (err) {
-      alert("Erro ao logar: " + err.message);
+      alert('Erro ao logar: ' + err.message);
     }
   };
 
   return (
-    <Container>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
-        <Input
-          type="password"
-          name="password"
-          placeholder="Senha"
-          onChange={handleChange}
-        />
-        <Button type="submit">Entrar</Button>
-      </form>
-    </Container>
+    <Background>
+      <Card>
+        <img src="/assets/logo.png" alt="Livros & Café" width={60} />
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="email"
+            name="email"
+            placeholder="Digite seu e-mail"
+            onChange={handleChange}
+            required
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Digite sua senha"
+            onChange={handleChange}
+            required
+          />
+          <Button type="submit">Entrar</Button>
+        </form>
+        <SmallText>
+          Ainda não tem conta?{' '}
+          <StyledLink to="/register">Cadastre-se</StyledLink>
+        </SmallText>
+      </Card>
+    </Background>
   );
 }
