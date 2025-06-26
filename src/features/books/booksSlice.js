@@ -13,7 +13,11 @@ const booksSlice = createSlice({
     status: 'idle', 
     error: null,
   },
-  reducers: {},
+  reducers: {
+    removeBook: (state, action) => {
+      state.items = state.items.filter(book => book.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBooks.pending, (state) => {
@@ -30,4 +34,5 @@ const booksSlice = createSlice({
   },
 });
 
+export const { removeBook } = booksSlice.actions;
 export default booksSlice.reducer;

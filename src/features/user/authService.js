@@ -9,14 +9,20 @@ export const fakeAuthService = {
   },
 
   login: async ({ email, password }) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (email && password) {
-          resolve({ id: 1, name: "Usuário", email, token: "fake-jwt-token" });
-        } else {
-          reject(new Error("Email e senha são obrigatórios"));
-        }
-      }, 500);
-    });
-  }
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (email && password) {
+        resolve({
+          id: 1,
+          name: email === 'admin@admin.com' ? 'Admin' : 'Usuário',
+          email,
+          role: email === 'admin@admin.com' ? 'admin' : 'user',
+          token: "fake-jwt-token"
+        });
+      } else {
+        reject(new Error("Email e senha são obrigatórios"));
+      }
+    }, 500);
+  });
+}
 };
