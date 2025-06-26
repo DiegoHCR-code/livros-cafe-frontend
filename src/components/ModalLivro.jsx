@@ -31,7 +31,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   text-align: center;
 
-  h3{
+  h3 {
     font-size: 2.5rem;
     text-align: center;
     color: #1b0c0a;
@@ -92,8 +92,10 @@ export default function ModalLivro({ onClose }) {
     image: '',
     title: '',
     author: '',
+    category: '',
     price: '',
   });
+
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -129,6 +131,13 @@ export default function ModalLivro({ onClose }) {
             name="author"
             placeholder="Autor"
             value={form.author}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="category"
+            placeholder="Categoria (ex: Romance, Fantasia)"
+            value={form.category}
             onChange={handleChange}
             required
           />
