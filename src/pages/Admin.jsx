@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { fetchBooks, removeBook } from "../features/books/booksSlice";
+import { fetchBooks, removeBook } from "../features/books/booksThunks";
 import ModalLivro from "../components/ModalLivro";
 import Header from "../components/Header";
 

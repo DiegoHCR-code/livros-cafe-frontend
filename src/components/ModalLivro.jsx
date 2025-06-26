@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addBook } from '../features/books/booksSlice';
+import { addBook } from '../features/books/booksThunks';
 
 const Overlay = styled.div`
   position: fixed;

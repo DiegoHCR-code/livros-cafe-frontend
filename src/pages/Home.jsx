@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { fetchBooks } from '../features/books/booksSlice';
+import { fetchBooks } from '../features/books/booksThunks';
 import Header from '../components/Header';
 
 const Background = styled.div`
@@ -14,7 +14,6 @@ const Background = styled.div`
 
 const Container = styled.div`
   width: 95%;
-  max-width: 1200px;
   margin: 0 auto;
 `;
 
@@ -43,7 +42,7 @@ const StyledSlider = styled(Slider)`
 
 const CarouselImage = styled.img`
   width: 100%;
-  height: 400px;
+  height: 500px;
   object-fit: cover;
   border-radius: 30px;
   border: 1px solid #d9b99b;
@@ -51,7 +50,7 @@ const CarouselImage = styled.img`
 
 const BookGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 2rem;
 `;
 
@@ -75,7 +74,7 @@ const BookCard = styled(Link)`
 
 const BookImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 500px;
   object-fit: cover;
   border-radius: 20px;
   margin-bottom: 0.75rem;

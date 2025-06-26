@@ -1,23 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api/livros';
-
-// Thunks
-export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
-  const response = await axios.get(API_URL);
-  return response.data;
-});
-
-export const addBook = createAsyncThunk('books/addBook', async (book) => {
-  const response = await axios.post(API_URL, book);
-  return response.data;
-});
-
-export const removeBook = createAsyncThunk('books/removeBook', async (id) => {
-  await axios.delete(`${API_URL}/${id}`);
-  return id;
-});
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchBooks, addBook, removeBook } from './booksThunks';
 
 const booksSlice = createSlice({
   name: 'books',
@@ -33,8 +15,8 @@ const booksSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchBooks.fulfilled, (state, action) => {
-        state.items = action.payload;
         state.loading = false;
+        state.items = action.payload;
       })
       .addCase(fetchBooks.rejected, (state, action) => {
         state.loading = false;
@@ -44,7 +26,7 @@ const booksSlice = createSlice({
         state.items.push(action.payload);
       })
       .addCase(removeBook.fulfilled, (state, action) => {
-        state.items = state.items.filter((book) => book.id !== action.payload);
+        state.items = state.items.filter(book => book.id !== action.payload);
       });
   },
 });
