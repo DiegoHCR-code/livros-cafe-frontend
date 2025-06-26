@@ -26,6 +26,30 @@ export const getBooks = async () => {
           category: "Clássicos",
           image: "/assets/logo.png",
         },
+        {
+          id: 4,
+          title: "O Hobbit",
+          author: "J.R.R. Tolkien",
+          price: 59,
+          category: "Fantasia",
+          image: "/assets/logo.png",
+        },
+        {
+          id: 5,
+          title: "Dom Casmurro",
+          author: "Machado de Assis",
+          price: 35,
+          category: "Clássicos",
+          image: "/assets/logo.png",
+        },
+        {
+          id: 6,
+          title: "Dom Casmurro",
+          author: "Machado de Assis",
+          price: 35,
+          category: "Clássicos",
+          image: "/assets/logo.png",
+        },
       ]);
     }, 800);
   });

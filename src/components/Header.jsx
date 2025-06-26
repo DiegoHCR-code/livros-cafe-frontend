@@ -13,7 +13,7 @@ const HeaderBar = styled.header`
   justify-content: space-between;
 `;
 
-const Title = styled.h1`
+const Title = styled(Link)`
   display: inline-block;
   color: #4b2414;
   font-size: 2.5rem;
@@ -84,7 +84,7 @@ export default function Header() {
 
   return (
     <HeaderBar>
-      <Title>Livros & Café</Title>
+      <Title to="/">Livros & Café</Title>
       <Nav>
         {isAuthenticated ? (
           <>
