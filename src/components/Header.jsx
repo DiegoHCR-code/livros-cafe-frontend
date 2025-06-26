@@ -18,6 +18,7 @@ const Title = styled(Link)`
   color: #4b2414;
   font-size: 2.5rem;
   font-family: fantasy;
+  text-decoration: none;
   margin: 0;
 `;
 
