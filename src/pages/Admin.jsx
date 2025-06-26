@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchBooks, removeBook } from "../features/books/booksSlice";
+import ModalLivro from "../components/ModalLivro";
 
 const Container = styled.div`
   padding: 2rem;
@@ -38,9 +39,23 @@ const DeleteButton = styled.button`
   margin-top: 8px;
 `;
 
+const Form = styled.form`
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+`;
+
 export default function Admin() {
   const books = useSelector((state) => state.books.items);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     dispatch(fetchBooks());
@@ -57,15 +72,23 @@ export default function Admin() {
       <h2>Painel Administrativo</h2>
       <p>Gerencie os livros da loja</p>
 
-      <AddButton onClick={() => alert("Criar livro ainda não implementado")}>
-        + Novo Livro
-      </AddButton>
+      <AddButton onClick={() => setShowModal(true)}>+ Novo Livro</AddButton>
+
+      {showModal && <ModalLivro onClose={() => setShowModal(false)} />}
 
       <BookList>
-        {books.length === 0 && <p>Nenhum livro cadastrado.</p>}
-
         {books.map((book) => (
           <Card key={book.id}>
+            <img
+              src={book.image}
+              alt={book.title}
+              style={{
+                width: "100%",
+                height: "200px",
+                objectFit: "cover",
+                borderRadius: "6px",
+              }}
+            />
             <h3>{book.title}</h3>
             <p>
               <strong>Autor:</strong> {book.author}
