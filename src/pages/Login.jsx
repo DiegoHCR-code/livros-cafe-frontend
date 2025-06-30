@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { fakeAuthService } from '../features/user/authService';
-import { login } from '../features/user/userSlice';
-import { useNavigate, Link } from 'react-router-dom';
+import styled from "styled-components";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../features/user/userSlice";
+import { authService } from "../features/user/authService"; // ← use o service real
+import { useNavigate, Link } from "react-router-dom";
 
 const Background = styled.div`
   background-color: #1b0c0a;
@@ -20,7 +20,7 @@ const Card = styled.div`
   border-radius: 30px;
   width: 100%;
   max-width: 700px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   text-align: center;
 
   img {
@@ -34,11 +34,11 @@ const Input = styled.input`
   margin: 10px 0;
   border: 1px solid #d9b99b;
   border-radius: 25px;
-  background: #F8EDD4FF;
+  background: #f8edd4ff;
   color: #1b0c0a;
 
   &::placeholder {
-    color: #1B0C0AFA;
+    color: #1b0c0afa;
     font-size: 1rem;
   }
 `;
@@ -79,25 +79,29 @@ const StyledLink = styled(Link)`
 `;
 
 export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleChange = e =>
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await fakeAuthService.login(form);
-      dispatch(login(user));
-      if (user.role === 'admin') {
-        navigate('/admin');
+      const user = await authService.login(form); // chama backend real
+      localStorage.setItem("token", user.token);
+
+      dispatch(login({ user, token: user.token }));
+
+      // Redirecionamento
+      if (user.role === "admin") {
+        navigate("/admin");
       } else {
-        navigate('/');
+        navigate("/");
       }
     } catch (err) {
-      alert('Erro ao logar: ' + err.message);
+      alert("Erro ao logar: " + (err.response?.data?.error || err.message));
     }
   };
 
@@ -123,7 +127,7 @@ export default function Login() {
           <Button type="submit">Entrar</Button>
         </form>
         <SmallText>
-          Ainda não tem conta?{' '}
+          Ainda não tem conta?{" "}
           <StyledLink to="/register">Cadastre-se</StyledLink>
         </SmallText>
       </Card>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchBooks, removeBook } from "../features/books/booksThunks";
 import ModalLivro from "../components/ModalLivro";
+import EditBookModal from "../components/EditBookModal";
 import Header from "../components/Header";
 
 const Background = styled.div`
@@ -11,7 +12,7 @@ const Background = styled.div`
 `;
 
 const Panel = styled.div`
-  background-color: #F3E6D6FF;
+  background-color: #f3e6d6ff;
   border: 1px solid #d9b99b;
   border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
@@ -64,7 +65,7 @@ const BookList = styled.div`
 `;
 
 const BookCard = styled.div`
-  background-color: #F3E6D6FF;
+  background-color: #f3e6d6ff;
   border: 1px solid #d9b99b;
   border-radius: 20px;
   overflow: hidden;
@@ -75,7 +76,7 @@ const BookCard = styled.div`
 
   img {
     width: 100%;
-    height: 400px;
+    height: 600px;
     object-fit: cover;
   }
 
@@ -90,7 +91,7 @@ const BookCard = styled.div`
     margin: 0 0 1rem;
     padding-left: 1rem;
     font-size: 1.8rem;
-    color: #3F2412FF;
+    color: #3f2412ff;
   }
 
   p {
@@ -102,14 +103,14 @@ const BookCard = styled.div`
 `;
 
 const DeleteButton = styled(ActionButton)`
-  background-color: #E91A03FF;
+  background-color: #e91a03ff;
   font-size: 1.1rem;
   padding: 1rem;
   margin-top: 2rem;
   border-radius: 0 0 20px 20px;
 
   &:hover {
-    background-color: #EC3424FF;
+    background-color: #ec3424ff;
   }
 `;
 
@@ -117,6 +118,7 @@ export default function Admin() {
   const books = useSelector((state) => state.books.items);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [livroEditando, setLivroEditando] = useState(null);
 
   useEffect(() => {
     dispatch(fetchBooks());
@@ -155,8 +157,15 @@ export default function Admin() {
                   <strong>Autor:</strong> {book.author}
                 </p>
                 <p>
-                  <strong>Preço:</strong> R$ {book.price.toFixed(2)}
+                  <strong>Preço:</strong> R${" "}
+                  {Number(book.price || 0).toFixed(2)}
                 </p>
+                <p style={{ marginTop: "20px", opacity: 0.8 }}>
+                  <strong>Qtd em estoque:</strong> {book.quantidade}
+                </p>
+                <ActionButton onClick={() => setLivroEditando(book)}>
+                  Editar
+                </ActionButton>
                 <DeleteButton onClick={() => handleDelete(book.id)}>
                   Excluir
                 </DeleteButton>
@@ -165,6 +174,14 @@ export default function Admin() {
           ))}
         </BookList>
       </Panel>
+
+      {livroEditando && (
+        <EditBookModal
+          livro={livroEditando}
+          onClose={() => setLivroEditando(null)}
+          onSave={() => dispatch(fetchBooks())}
+        />
+      )}
     </Background>
   );
 }

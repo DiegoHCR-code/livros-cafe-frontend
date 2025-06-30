@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addBook } from '../features/books/booksThunks';
+import styled from "styled-components";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addBook } from "../features/books/booksThunks";
 
 const Overlay = styled.div`
   position: fixed;
@@ -9,7 +9,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@ const ModalContainer = styled.div`
   width: 100%;
   max-width: 600px;
   position: relative;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,11 +60,11 @@ const Input = styled.input`
   margin: 10px 0;
   border: 1px solid #d9b99b;
   border-radius: 25px;
-  background: #F8EDD4FF;
+  background: #f8edd4ff;
   color: #1b0c0a;
 
   &::placeholder {
-    color: #1B0C0AFA;
+    color: #1b0c0afa;
     font-size: 1rem;
   }
 `;
@@ -89,20 +89,21 @@ const SaveButton = styled.button`
 
 export default function ModalLivro({ onClose }) {
   const [form, setForm] = useState({
-    image: '',
-    title: '',
-    author: '',
-    category: '',
-    price: '',
+    image: "",
+    title: "",
+    author: "",
+    category: "",
+    price: "",
+    quantidade: 1,
   });
 
   const dispatch = useDispatch();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addBook({ ...form, price: parseFloat(form.price) }));
     onClose();
@@ -140,6 +141,13 @@ export default function ModalLivro({ onClose }) {
             value={form.category}
             onChange={handleChange}
             required
+          />
+          <Input
+            name="quantidade"
+            type="number"
+            placeholder="Quantidade em estoque"
+            value={form.quantidade}
+            onChange={handleChange}
           />
           <Input
             name="price"

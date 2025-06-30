@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/user/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const HeaderBar = styled.header`
@@ -25,13 +25,13 @@ const Title = styled(Link)`
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  
+
   a {
     color: #7b4b2a;
     text-decoration: none;
     font-weight: bold;
     margin: 0 0.5rem;
-    
+
     &:hover {
       color: #5c3820;
     }
@@ -80,8 +80,17 @@ const LogoutButton = styled.button`
 `;
 
 export default function Header() {
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  console.log(user);
+  
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <HeaderBar>
@@ -89,20 +98,20 @@ export default function Header() {
       <Nav>
         {isAuthenticated ? (
           <>
-            <UserGreeting>
-              Olá, <UserName>{user.name}</UserName>
-            </UserGreeting>
-            {user.role === "admin" && (
+            {user?.name && (
+              <UserGreeting>
+                Olá, <UserName>{user.name}</UserName>
+              </UserGreeting>
+            )}
+            {user?.role === "admin" && (
               <StyledLink to="/admin">Painel Admin</StyledLink>
             )}
-            <LogoutButton onClick={() => dispatch(logout())}>
-              Sair
-            </LogoutButton>
+            <LogoutButton onClick={handleLogout}>Sair</LogoutButton>
           </>
         ) : (
           <>
             <Link to="/login">Entrar</Link>
-            <Link to="/cadastro">Cadastrar</Link>
+            <Link to="/register">Cadastrar</Link>
           </>
         )}
       </Nav>
